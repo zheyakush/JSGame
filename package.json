@@ -1,0 +1,22 @@
+{
+  "name": "JSGame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "engines": {
+    "node": ">=4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zheyakush/JSGame.git"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "three": "^0.110.0",
+    "requirejs": "2.3.6",
+    "requirejs-plugins": "1.0.2"
+  },
+  "private": false
+}

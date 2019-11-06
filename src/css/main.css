@@ -1,0 +1,12 @@
+.container {
+    display: block;
+    float: left;
+    width: 49%;
+    padding-right: 2%;
+}
+
+.info {
+    display: block;
+    float: left;
+    width: 49%;
+}
