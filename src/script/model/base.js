@@ -20,45 +20,73 @@ define(
             if (options && Object.keys(options).length && options.color) {
                 color = options.color;
             }
+
             this.material = new THREE.MeshBasicMaterial({ color: color });
             this.mesh = new THREE.Mesh(this.geometry, this.material);
-
-            this.mesh.position.x = startPosition.x > 0 ? app.config.MODEL_BASE_WIDTH * startPosition.x - this.offsetWidth  : this.offsetWidth;
-            this.mesh.position.y = startPosition.y > 0 ? app.config.MODEL_BASE_HEIGHT * startPosition.y - this.offsetHeight  : this.offsetHeight;
+            this.mesh.position.x = startPosition.x > 0 ? app.config.MODEL_BASE_WIDTH * startPosition.x - this.offsetWidth : this.offsetWidth;
+            this.mesh.position.y = startPosition.y > 0 ? app.config.MODEL_BASE_HEIGHT * startPosition.y - this.offsetHeight : this.offsetHeight;
 
             app.scene.add(this.mesh);
             app.elements[this.id] = this;
 
-            this.initEvents();
+            this.keyboardEvents();
         }
 
-        ModelBase.prototype.initEvents = function () {
+        ModelBase.prototype.keyboardEvents = function () {
             var player1 = app.elements['player1'];
             var player2 = app.elements['player2'];
             keyboardController({
-                65: function () {
-                    player2.left();
+                65: {
+                    speed: 150,
+                    callback: function () {
+                        player2.left();
+                    }
                 },
-                87: function () {
-                    player2.top();
+                87: {
+                    speed: 150,
+                    callback: function () {
+                        player2.top();
+                    }
                 },
-                68: function () {
-                    player2.right();
+                68: {
+                    speed: 150,
+                    callback: function () {
+                        player2.right();
+                    }
                 },
-                83: function () {
-                    player2.bottom();
+                83: {
+                    speed: 50,
+                    callback: function () {
+                        player2.bottom();
+                    }
                 },
-                37: function () {
-                    player1.left();
+                37: {
+                    speed: 150,
+                    callback: function () {
+                        player1.left();
+                        player1.mesh.rotation.z = Math.PI / 2;
+                    }
                 },
-                38: function () {
-                    player1.top();
+                38: {
+                    speed: 150,
+                    callback: function () {
+                        player1.top();
+                        player1.mesh.rotation.z = Math.PI;
+                    }
                 },
-                39: function () {
-                    player1.right();
+                39: {
+                    speed: 150,
+                    callback: function () {
+                        player1.right();
+                        player1.mesh.rotation.z = Math.PI / -2;
+                    }
                 },
-                40: function () {
-                    player1.bottom();
+                40: {
+                    speed: 150,
+                    callback: function () {
+                        player1.bottom();
+                        player1.mesh.rotation.z = 0;
+                    }
                 }
             });
         };

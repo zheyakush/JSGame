@@ -1,9 +1,9 @@
 define(['../app'], function (app) {
-    function KeyboardController(keys, repeat) {
+    function KeyboardController(keys) {
         // Lookup of key codes to timer ID, or null for no repeat
         //
         var timers = {};
-        repeat = repeat || app.config.FRAME_LOOP;
+        var repeat = app.config.FRAME_LOOP;
 
         // When key is pressed and we don't already think it's pressed, call the
         // key action callback and set a timer to generate another one after a delay
@@ -15,9 +15,12 @@ define(['../app'], function (app) {
             }
             if (!(key in timers)) {
                 timers[key] = null;
-                keys[key]();
+                keys[key].callback();
                 if (repeat !== 0) {
-                    timers[key] = setInterval(keys[key], repeat);
+                    if (keys[key].hasOwnProperty('speed') && keys[key].speed) {
+                        repeat = keys[key].speed;
+                    }
+                    timers[key] = setInterval(keys[key].callback, repeat);
                 }
             }
             return false;
