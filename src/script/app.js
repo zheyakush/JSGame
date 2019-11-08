@@ -7,6 +7,10 @@ define([
         scene: null,
         camera: null,
         renderer: null,
+        blockers: {
+            x: {},
+            y: {}
+        },
         config: config
     };
 });

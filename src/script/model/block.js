@@ -1,15 +1,25 @@
-define(['app', './base',
-    'three',], function (app, modelBase, THREE) {
-    function modelBlock(id, startPosition, speed, options) {
-        modelBase.call(this, id, startPosition, speed, options);
-        const loader = new THREE.TextureLoader();
-        this.material = new THREE.MeshBasicMaterial({
-            map: loader.load('./img/brick9.jpg'),
-        });
-        this.mesh.material = this.material;
-    }
-    modelBlock.prototype = Object.create(modelBase.prototype);
-    app.model.block = modelBlock;
+define(
+    [
+        'app',
+        './base',
+        'three'
+    ],
+    function (app, modelBase, THREE) {
+        function ModelBlock(id, config) {
+            this.isBlocker = true;
+            modelBase.call(this, id, config);
+        }
 
-    return modelBlock;
-});
+        ModelBlock.prototype = Object.create(modelBase.prototype);
+        app.model.block = ModelBlock;
+
+        ModelBlock.prototype.createMaterial = function (config) {
+            const loader = new THREE.TextureLoader();
+            return new THREE.MeshBasicMaterial({
+                map: loader.load('./img/brick9.jpg'),
+            });
+        };
+
+        return ModelBlock;
+    }
+);

@@ -1,11 +1,10 @@
 define([
     'three',
     'app',
-    'model/car',
-    'model/block'
+    'model/collector'
 ], function (THREE, app) {
-    app.config.SCENE_WIDTH = Math.floor(app.config.SCENE_WIDTH / app.config.MODEL_BASE_WIDTH) * app.config.MODEL_BASE_WIDTH;
-    app.config.SCENE_HEIGHT = Math.floor(app.config.SCENE_HEIGHT / app.config.MODEL_BASE_HEIGHT) * app.config.MODEL_BASE_HEIGHT;
+    app.config.SCENE_WIDTH = Math.floor(app.config.SCENE_WIDTH / app.config.GRID_WIDTH) * app.config.GRID_WIDTH;
+    app.config.SCENE_HEIGHT = Math.floor(app.config.SCENE_HEIGHT / app.config.GRID_HEIGHT) * app.config.GRID_HEIGHT;
 
     var initCamera = function () {
         // Camera: Y up, X right, Z up

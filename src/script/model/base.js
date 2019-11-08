@@ -1,123 +1,52 @@
 define(
     [
-        '../app',
         'three',
-        './keyboard'
+        '../app'
     ],
-    function (app, THREE, keyboardController) {
-        function ModelBase(id, startPosition, speed, options) {
+    function (THREE, app) {
+        function ModelBase(id, config) {
+            // General setting
             this.id = id;
-            this.width = app.config.MODEL_BASE_WIDTH;
-            this.height = app.config.MODEL_BASE_HEIGHT;
-            this.x = speed && speed.x ? speed.x : app.config.MODEL_BASE_WIDTH;
-            this.y = speed && speed.y ? speed.y : app.config.MODEL_BASE_HEIGHT;
-
+            this.width = app.config.GRID_WIDTH;
+            this.height = app.config.GRID_HEIGHT;
             this.offsetHeight = 1 * (this.height / 2).toFixed(2);
             this.offsetWidth = 1 * (this.width / 2).toFixed(2);
 
-            this.geometry = new THREE.BoxGeometry(this.width, this.height);
-            var color = parseInt(app.config.MODEL_BASE_COLOR.replace(/^#/, ''), 16);
-            if (options && Object.keys(options).length && options.color) {
-                color = options.color;
-            }
+            this.isBlocker = this.isBlocker || false;
+            this.helth = 100;
+            this.armor = 10;
+            this.createElement(config);
 
-            this.material = new THREE.MeshBasicMaterial({ color: color });
+            if (this.isBlocker) {
+                app.blockers.x[this.position.x] = app.blockers.x[this.position.x] || [];
+                app.blockers.x[this.position.x].push(this.position.y);
+                app.blockers.y[this.position.y] = app.blockers.y[this.position.y] || [];
+                app.blockers.y[this.position.y].push(this.position.x);
+            }
+        }
+
+        ModelBase.prototype.createElement = function (config) {
+            var startPosition = config.startPosition;
+            this.geometry = new THREE.BoxGeometry(this.width, this.height);
+            this.material = this.createMaterial();
             this.mesh = new THREE.Mesh(this.geometry, this.material);
-            this.mesh.position.x = startPosition.x > 0 ? app.config.MODEL_BASE_WIDTH * startPosition.x - this.offsetWidth : this.offsetWidth;
-            this.mesh.position.y = startPosition.y > 0 ? app.config.MODEL_BASE_HEIGHT * startPosition.y - this.offsetHeight : this.offsetHeight;
+            this.position = {
+                x: startPosition.x,
+                y: startPosition.y
+            };
+            this.mesh.position.x = startPosition.x > 0 ? app.config.GRID_WIDTH * startPosition.x - this.offsetWidth : this.offsetWidth;
+            this.mesh.position.y = startPosition.y > 0 ? app.config.GRID_HEIGHT * startPosition.y - this.offsetHeight : this.offsetHeight;
 
             app.scene.add(this.mesh);
             app.elements[this.id] = this;
-
-            this.keyboardEvents();
-        }
-
-        ModelBase.prototype.keyboardEvents = function () {
-            var player1 = app.elements['player1'];
-            var player2 = app.elements['player2'];
-            keyboardController({
-                65: {
-                    speed: 150,
-                    callback: function () {
-                        player2.left();
-                    }
-                },
-                87: {
-                    speed: 150,
-                    callback: function () {
-                        player2.top();
-                    }
-                },
-                68: {
-                    speed: 150,
-                    callback: function () {
-                        player2.right();
-                    }
-                },
-                83: {
-                    speed: 50,
-                    callback: function () {
-                        player2.bottom();
-                    }
-                },
-                37: {
-                    speed: 150,
-                    callback: function () {
-                        player1.left();
-                        player1.mesh.rotation.z = Math.PI / 2;
-                    }
-                },
-                38: {
-                    speed: 150,
-                    callback: function () {
-                        player1.top();
-                        player1.mesh.rotation.z = Math.PI;
-                    }
-                },
-                39: {
-                    speed: 150,
-                    callback: function () {
-                        player1.right();
-                        player1.mesh.rotation.z = Math.PI / -2;
-                    }
-                },
-                40: {
-                    speed: 150,
-                    callback: function () {
-                        player1.bottom();
-                        player1.mesh.rotation.z = 0;
-                    }
-                }
-            });
         };
 
-        ModelBase.prototype.left = function () {
-            if (app.config.SCENE_LEFT < (this.mesh.position.x - this.offsetWidth)) {
-                this.mesh.position.x -= this.x;
+        ModelBase.prototype.createMaterial = function (config) {
+            var color = parseInt(app.config.MODEL_BASE_COLOR.replace(/^#/, ''), 16);
+            if (config && Object.keys(config).length && config.color) {
+                color = config.color;
             }
-        };
-
-        ModelBase.prototype.right = function () {
-            if (app.config.SCENE_WIDTH > (this.mesh.position.x + this.offsetWidth)) {
-                this.mesh.position.x += this.x;
-            }
-        };
-
-        ModelBase.prototype.top = function () {
-            if (app.config.SCENE_TOP < (this.mesh.position.y - this.offsetHeight)) {
-                this.mesh.position.y -= this.y;
-            }
-        };
-
-        ModelBase.prototype.bottom = function () {
-            if (app.config.SCENE_WIDTH > (this.mesh.position.y + this.offsetHeight)) {
-                this.mesh.position.y += this.y;
-            }
-        };
-
-        ModelBase.prototype.remove = function () {
-            app.scene.remove(app.elements[this.id].mesh);
-            delete app.elements[this.id];
+            return new THREE.MeshBasicMaterial({ color: color });
         };
 
         return ModelBase;

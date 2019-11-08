@@ -1,0 +1,6 @@
+define([
+    './tank',
+    './block'
+], function () {
+
+});

@@ -21,10 +21,26 @@ requirejs(
         'model/grid'
     ],
     function (app) {
-        new app.model.car('player1', { x: 0, y: 1 }, { x: 10, y: 10 }, { color: 0xFF8528 });
-        new app.model.car('player2', { x: 0, y: 2 }, null, { color: 0x00ffec });
+        new app.model.tank(
+            'player1',
+            {
+                startPosition: { x: 1, y: 1.5 },
+                color: 0xff8528
+            }
+        );
+
+        // new app.model.tank(
+        //     'player2',
+        //     {
+        //         startPosition: { x: 1, y: 2 },
+        //         stepSize: null,
+        //         color: 0x00ffec
+        //     }
+        // );
 
         var blocks = [
+            { x: 2, y: 1 },
+            { x: 2, y: 3 },
             { x: 5, y: 5 },
             { x: 5, y: 6 },
             { x: 5, y: 7 },
@@ -53,7 +69,12 @@ requirejs(
             { x: 18, y: 7 }
         ];
         for (var k = 0; k < blocks.length; k++) {
-            new app.model.block('block', blocks[k]);
+            new app.model.block('block-' + blocks[k].x + '-' + blocks[k].y, {
+                startPosition: blocks[k]
+            });
         }
+
+        window.app = app;
+        console.log(app.blockers);
     }
 );
