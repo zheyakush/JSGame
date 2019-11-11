@@ -1,6 +1,6 @@
 define([
-    './tank',
-    './block'
+    'model/map/map',
+    'model/character/tank'
 ], function () {
 
 });

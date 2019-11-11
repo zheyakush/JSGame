@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <style>
+        .table table {
+            border: 1px solid #505050;
+        }
+
+        .table table tr {
+            height: 15px;
+            width: 15px;
+        }
+
+        .table table td {
+            border: 1px solid #505050;
+            height: 15px;
+            width: 15px;
+        }
+
+        .table table td.active {
+            background-color: indianred;
+        }
+    </style>
+</head>
+<body>
+<div class="table"></div>
+<div class="configurator">
+    <div class="field width">
+        <label for="width">Width</label>
+        <input type="text" name="width" id="width" value="10">
+    </div>
+    <div class="field height">
+        <label for="height">Height</label>
+        <input type="text" name="height" id="height" value="10">
+    </div>
+    <div class="result">
+
+    </div>
+</div>
+</body>
+<script>
+    function drawTable() {
+        $('.table').html('');
+        var $table = $('<table/>');
+        var col = $('#width').val();
+        var row = $('#height').val();
+        for (var i = 1; i <= row; i++) {
+            var tds = '';
+            for (var k = 1; k <= col; k++) {
+                var coordinates = {
+                    x: k,
+                    y: i
+                };
+                tds += '<td data-coordinates=\'' + JSON.stringify(coordinates) + '\'></td>';
+            }
+            $table.append('<tr>' + tds + '</tr>');
+        }
+        $('.table').append($table);
+    };
+    drawTable();
+
+    function getCoordinates() {
+        var coordinates = $('td.active').map(function (i, el) {
+            return $(el).data('coordinates');
+        }).toArray();
+        $('.result').html(JSON.stringify(coordinates));
+    }
+
+    $('body').on('change', '.field input', drawTable);
+    $('body').on('click', 'td', function () {
+        $(this).toggleClass('active');
+        getCoordinates();
+    });
+</script>
+</html>

@@ -1,5 +1,5 @@
 define([
-    'json!config.json',
+    'json!./config/app.json',
 ], function (config) {
     return {
         elements: {},
@@ -7,10 +7,7 @@ define([
         scene: null,
         camera: null,
         renderer: null,
-        blockers: {
-            x: {},
-            y: {}
-        },
+        blockers: [],
         config: config
     };
 });
