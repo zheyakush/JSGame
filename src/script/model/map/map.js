@@ -1,16 +1,28 @@
 define(
     [
         'app',
-        './element/block'
+        './element/brickWall',
+        './element/concreteWall'
     ],
     function (app) {
         function ModelMap(mapName) {
             requirejs(['json!./config/map/' + mapName + '.json'], function (map) {
                 var blocks = map.blocks;
                 for (var k = 0; k < blocks.length; k++) {
-                    new app.model.block('block-' + blocks[k].x + '-' + blocks[k].y, {
-                        startPosition: blocks[k]
-                    });
+                    var type = blocks[k].hasOwnProperty('type') ? blocks[k].type : 'brick';
+                    switch (type) {
+                        case 'concrete':
+                            new app.model.concreteWall('block-' + blocks[k].x + '-' + blocks[k].y, {
+                                startPosition: blocks[k]
+                            });
+                            break;
+                        case 'brick':
+                        default:
+                            new app.model.brickWall('block-' + blocks[k].x + '-' + blocks[k].y, {
+                                startPosition: blocks[k]
+                            });
+                            break;
+                    }
                 }
             });
         }

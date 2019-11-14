@@ -12,7 +12,7 @@ define(
 
         Grid.prototype.render = function () {
             if (app.config.GRID_ENABLED) {
-                var material = new THREE.LineBasicMaterial({color: this.gridColor});
+                var material = new THREE.LineBasicMaterial({ color: this.gridColor });
                 var countVerticalLines = Math.floor(app.config.SCENE_WIDTH / app.config.GRID_WIDTH);
                 var geometry, line, k;
                 for (k = 0; k < countVerticalLines; k++) {
@@ -49,12 +49,11 @@ define(
                 x1: sceneX + w / 2,
                 y1: sceneY + h / 2
             };
-            var res = Object.keys(app.blockers).find(function (id) {
-                var blocker = app.blockers[id];
+            return Object.keys(app.blockers).find(function (id) {
+                var blocker = app.blockers[id].position;
+                
                 return player.x1 > blocker.x && player.x < blocker.x1 && player.y1 > blocker.y && player.y < blocker.y1
             });
-
-            return res;
         };
 
         Grid.prototype.isAvailableSpace = function (sceneX, sceneY, w, h) {

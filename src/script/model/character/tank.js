@@ -2,11 +2,12 @@ define(
     [
         'three',
         'app',
-        './vehicle',
-        './bullet1'
+        'model/character/vehicleBase',
+        'model/character/bullet1'
     ],
     function (THREE, app, modelVehicle, bullet) {
         function ModelTank(id, config) {
+            this.id = id;
             modelVehicle.call(this, id, config);
 
             const loader = new THREE.TextureLoader();
@@ -19,44 +20,38 @@ define(
         ModelTank.prototype = Object.create(modelVehicle.prototype);
         app.model.tank = ModelTank;
 
-        ModelTank.prototype.keyboardEvents = function () {
-            modelVehicle.prototype.keyboardEvents.call(this);
+        ModelTank.prototype.keyBinding = function () {
+            modelVehicle.prototype.keyBinding.call(this);
 
-            var player1 = app.elements['player1'];
-            this.keyboardMap[32] = {
-                speed: 0,
-                callback: function () {
-                    player1.shot();
+            var player = app.elements.hasOwnProperty(this.id) && app.elements[this.id] ? app.elements[this.id] : null;
+            if (player && app.config.hasOwnProperty(this.id)) {
+                this.keyboardMap[app.config[this.id].FIRE] = {
+                    speed: 0,
+                    callback: function () {
+                        player.shot();
+                    }
                 }
             }
         };
 
         ModelTank.prototype.shot = function () {
-            var x = this.mesh.position.x;
-            var y = this.mesh.position.y;
-            switch (this.direction) {
-                case 'left':
-                    x = this.mesh.position.x - this.offsetWidth;
-                    break;
-                case 'right':
-                    x = this.mesh.position.x + this.offsetWidth;
-                    break;
-                case 'top':
-                    y = this.mesh.position.y - this.offsetHeight;
-                    break;
-                case 'bottom':
-                    y = this.mesh.position.y + this.offsetHeight;
-                    break;
-            }
-
-            this.b = new bullet({
+            var bulletObj = new bullet({
                 direction: this.direction,
-                startPosition: {
-                    x: x,
-                    y: y
-                }
+                startPosition: this.getFrontPosition()
             });
-            this.b.move();
+            bulletObj.move();
+        };
+
+        ModelTank.prototype.remove = function () {
+            var player = app.elements.hasOwnProperty(this.id) && app.elements[this.id] ? app.elements[this.id] : null;
+            if (player && app.config.hasOwnProperty(this.id)) {
+                this.keyboardMap[app.config[this.id].FIRE] = {
+                    speed: 0,
+                    callback: function () {}
+                }
+            }
+            modelVehicle.prototype.initKeyboardController.call(this);
+            modelVehicle.prototype.remove.call(this);
         };
 
         return ModelTank;

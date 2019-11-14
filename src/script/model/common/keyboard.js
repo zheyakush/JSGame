@@ -1,7 +1,10 @@
-define(['app'], function (app) {
+define(['lodash', 'app'], function (_, app) {
+    app.keyBinding = app.keyBinding || {};
+
     function KeyboardController(keys) {
         // Lookup of key codes to timer ID, or null for no repeat
         //
+        app.keyBinding = _.merge(app.keyBinding, keys);
         var timers = {};
         var repeat = app.config.FRAME_LOOP;
 
@@ -10,17 +13,17 @@ define(['app'], function (app) {
         //
         document.onkeydown = function (event) {
             var key = (event || window.event).keyCode;
-            if (!(key in keys)) {
+            if (!(key in app.keyBinding)) {
                 return true;
             }
             if (!(key in timers)) {
                 timers[key] = null;
-                keys[key].callback();
-                if (repeat !== 0 && keys[key].hasOwnProperty('speed') && keys[key].speed) {
-                    if (keys[key].hasOwnProperty('speed') && keys[key].speed) {
-                        repeat = keys[key].speed;
+                app.keyBinding[key].callback();
+                if (repeat !== 0 && app.keyBinding[key].hasOwnProperty('speed') && app.keyBinding[key].speed) {
+                    if (app.keyBinding[key].hasOwnProperty('speed') && app.keyBinding[key].speed) {
+                        repeat = app.keyBinding[key].speed;
                     }
-                    timers[key] = setInterval(keys[key].callback, repeat);
+                    timers[key] = setInterval(app.keyBinding[key].callback, repeat);
                 }
             }
             return false;

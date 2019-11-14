@@ -3,43 +3,53 @@
   "blocks": [
     {
       "x": 2,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 3,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 5,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 6,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 7,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 9,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 10,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 11,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 13,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 14,
-      "y": 2
+      "y": 2,
+      "type": "concrete"
     },
     {
       "x": 5,

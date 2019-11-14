@@ -8,6 +8,11 @@ requirejs.config({
         text: '../../node_modules/requirejs-plugins/lib/text',
         json: '../../node_modules/requirejs-plugins/src/json'
     },
+    packages : [{
+        name : "lodash",
+        location : "../../node_modules/lodash",
+        main : "lodash.min"
+    }],
     shim: {
         three: {
             exports: 'THREE'
@@ -22,23 +27,29 @@ requirejs(
     ],
     function (app) {
         new app.model.tank(
-            'player1',
+            app.config.PLAYER_1.ID,
             {
                 startPosition: { x: 5, y: 15 },
                 color: 0xff8528
             }
         );
-        new app.model.map('map1');
 
         // new app.model.tank(
-        //     'player2',
+        //     app.config.PLAYER_2.ID,
         //     {
-        //         startPosition: { x: 1, y: 2 },
-        //         stepSize: null,
-        //         color: 0x00ffec
+        //         startPosition: { x: 11, y: 15 },
+        //         color: 0xff8528
         //     }
         // );
 
+        // new app.model.bot1(
+        //     null,
+        //     {
+        //         startPosition: { x: 1, y: 15 }
+        //     }
+        // );
+
+        new app.model.map('map2');
         window.app = app;
     }
 );

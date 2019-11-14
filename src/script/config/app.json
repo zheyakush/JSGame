@@ -10,5 +10,23 @@
   "SCENE_TOP": 0,
   "SCENE_NEAR": 0,
   "SCENE_FAR": 50,
-  "MODEL_BASE_COLOR": "0xB22222"
+  "MODEL_BASE_COLOR": "0xB22222",
+  "PLAYER_1": {
+    "ID": "PLAYER_1",
+    "SPEED": 20,
+    "LEFT": 37,
+    "RIGHT": 39,
+    "TOP": 38,
+    "BOTTOM": 40,
+    "FIRE": 107
+  },
+  "PLAYER_2": {
+    "ID": "PLAYER_2",
+    "SPEED": 20,
+    "LEFT": 65,
+    "RIGHT": 68,
+    "TOP": 87,
+    "BOTTOM": 83,
+    "FIRE": 32
+  }
 }

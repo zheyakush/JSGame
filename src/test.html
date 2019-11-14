@@ -20,8 +20,12 @@
             width: 15px;
         }
 
-        .table table td.active {
+        .table table td.brick {
             background-color: indianred;
+        }
+
+        .table table td.concrete {
+            background-color: darkgrey;
         }
     </style>
 </head>
@@ -63,15 +67,28 @@
     drawTable();
 
     function getCoordinates() {
-        var coordinates = $('td.active').map(function (i, el) {
-            return $(el).data('coordinates');
+        var coordinates = $('td.brick, td.concrete').map(function (i, el) {
+            var result = $(el).data('coordinates');
+            result.type = $(this).hasClass('brick') ? 'brick' : 'concrete';
+            return result;
         }).toArray();
         $('.result').html(JSON.stringify(coordinates));
     }
 
     $('body').on('change', '.field input', drawTable);
     $('body').on('click', 'td', function () {
-        $(this).toggleClass('active');
+        if ($(this).hasClass('brick')) {
+            $(this)
+                .removeClass('brick')
+                .addClass('concrete');
+        } else if ($(this).hasClass('concrete')) {
+            $(this)
+                .removeClass('brick')
+                .removeClass('concrete');
+        } else {
+            $(this).addClass('brick');
+        }
+
         getCoordinates();
     });
 </script>

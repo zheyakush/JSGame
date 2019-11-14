@@ -6,7 +6,7 @@ define(
     function (THREE, app) {
         function ModelBase(id, config) {
             // General setting
-            this.id = this.id || id;
+            this.id = this.id ? this.id : (id ? id : Math.random().toString(36).substring(7));
             this.width = this.width || app.config.GRID_WIDTH;
             this.height = this.height || app.config.GRID_HEIGHT;
             this.offsetHeight = 1 * (this.height / 2).toFixed(2);
@@ -52,6 +52,8 @@ define(
         ModelBase.prototype.remove = function () {
             app.scene.remove(app.elements[this.id].mesh);
             delete app.elements[this.id];
+
+            return this;
         };
 
         return ModelBase;
